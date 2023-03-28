@@ -5,6 +5,7 @@ from helpers import prepare_dataset_nli, prepare_train_dataset_qa, \
     prepare_validation_dataset_qa, QuestionAnsweringTrainer, compute_accuracy
 import os
 import json
+from sklearn.preprocessing import LabelEncoder
 
 NUM_PREPROCESSING_WORKERS = 2
 
@@ -50,23 +51,36 @@ def main():
     training_args, args = argp.parse_args_into_dataclasses()
 
     # Dataset selection
-    if args.dataset.endswith('.json') or args.dataset.endswith('.jsonl'):
-        dataset_id = None
-        # Load from local json/jsonl file
-        dataset = datasets.load_dataset('json', data_files=args.dataset)
-        # By default, the "json" dataset loader places all examples in the train split,
-        # so if we want to use a jsonl file for evaluation we need to get the "train" split
-        # from the loaded dataset
-        eval_split = 'train'
-    else:
-        default_datasets = {'qa': ('squad',), 'nli': ('snli',)}
-        dataset_id = tuple(args.dataset.split(':')) if args.dataset is not None else \
-            default_datasets[args.task]
-        # MNLI has two validation splits (one with matched domains and one with mismatched domains). Most datasets just have one "validation" split
-        eval_split = 'validation_matched' if dataset_id == ('glue', 'mnli') else 'validation'
-        # Load the raw data
-        dataset = datasets.load_dataset(*dataset_id)
-    
+    # dataset = datasets.load_dataset("alisawuffles/WANLI")
+    dataset = datasets.load_dataset(
+        "alisawuffles/WANLI", split=('train[:100]', 'test[:100]'))
+    dataset = datasets.DatasetDict(
+        {'train': dataset[0], 'test': dataset[1]})
+    # print(dataset)
+    # Rename the split to the original name
+    dataset['train'] = dataset['train'].rename_column("gold", "label")
+    dataset['test'] = dataset['test'].rename_column("gold", "label")
+    label_map = {"entailment": 0, "neutral": 1, "contradiction": 2}
+
+    eval_split = 'train'
+
+    # if args.dataset.endswith('.json') or args.dataset.endswith('.jsonl'):
+    #     dataset_id = None
+    #     # Load from local json/jsonl file
+    #     dataset = datasets.load_dataset('json', data_files=args.dataset)
+    #     # By default, the "json" dataset loader places all examples in the train split,
+    #     # so if we want to use a jsonl file for evaluation we need to get the "train" split
+    #     # from the loaded dataset
+    #     eval_split = 'train'
+    # else:
+    #     default_datasets = {'qa': ('squad',), 'nli': ('snli',)}
+    #     dataset_id = tuple(args.dataset.split(':')) if args.dataset is not None else \
+    #         default_datasets[args.task]
+    #     # MNLI has two validation splits (one with matched domains and one with mismatched domains). Most datasets just have one "validation" split
+    #     eval_split = 'validation_matched' if dataset_id == ('glue', 'mnli') else 'validation'
+    #     # Load the raw data
+    #     dataset = datasets.load_dataset(*dataset_id)
+
     # NLI models need to have the output label count specified (label 0 is "entailed", 1 is "neutral", and 2 is "contradiction")
     task_kwargs = {'num_labels': 3} if args.task == 'nli' else {}
 
@@ -75,13 +89,17 @@ def main():
                      'nli': AutoModelForSequenceClassification}
     model_class = model_classes[args.task]
     # Initialize the model and tokenizer from the specified pretrained model/checkpoint
-    model = model_class.from_pretrained(args.model, **task_kwargs)
+    model = model_class.from_pretrained(
+        args.model, **task_kwargs)
     tokenizer = AutoTokenizer.from_pretrained(args.model, use_fast=True)
 
     # Select the dataset preprocessing function (these functions are defined in helpers.py)
     if args.task == 'qa':
-        prepare_train_dataset = lambda exs: prepare_train_dataset_qa(exs, tokenizer)
-        prepare_eval_dataset = lambda exs: prepare_validation_dataset_qa(exs, tokenizer)
+        def prepare_train_dataset(
+            exs): return prepare_train_dataset_qa(exs, tokenizer)
+
+        def prepare_eval_dataset(
+            exs): return prepare_validation_dataset_qa(exs, tokenizer)
     elif args.task == 'nli':
         prepare_train_dataset = prepare_eval_dataset = \
             lambda exs: prepare_dataset_nli(exs, tokenizer, args.max_length)
@@ -90,10 +108,10 @@ def main():
         raise ValueError('Unrecognized task name: {}'.format(args.task))
 
     print("Preprocessing data... (this takes a little bit, should only happen once per dataset)")
-    if dataset_id == ('snli',):
-        # remove SNLI examples with no label
-        dataset = dataset.filter(lambda ex: ex['label'] != -1)
-    
+    # if dataset_id == ('snli',):
+    #     # remove SNLI examples with no label
+    #     dataset = dataset.filter(lambda ex: ex['label'] != -1)
+
     train_dataset = None
     eval_dataset = None
     train_dataset_featurized = None
@@ -131,15 +149,15 @@ def main():
         trainer_class = QuestionAnsweringTrainer
         eval_kwargs['eval_examples'] = eval_dataset
         metric = datasets.load_metric('squad')
-        compute_metrics = lambda eval_preds: metric.compute(
+        def compute_metrics(eval_preds): return metric.compute(
             predictions=eval_preds.predictions, references=eval_preds.label_ids)
     elif args.task == 'nli':
         compute_metrics = compute_accuracy
-    
 
     # This function wraps the compute_metrics function, storing the model's predictions
     # so that they can be dumped along with the computed metrics
     eval_predictions = None
+
     def compute_metrics_and_store_predictions(eval_preds):
         nonlocal eval_predictions
         eval_predictions = eval_preds
@@ -185,7 +203,8 @@ def main():
 
         with open(os.path.join(training_args.output_dir, 'eval_predictions.jsonl'), encoding='utf-8', mode='w') as f:
             if args.task == 'qa':
-                predictions_by_id = {pred['id']: pred['prediction_text'] for pred in eval_predictions.predictions}
+                predictions_by_id = {pred['id']: pred['prediction_text']
+                                     for pred in eval_predictions.predictions}
                 for example in eval_dataset:
                     example_with_prediction = dict(example)
                     example_with_prediction['predicted_answer'] = predictions_by_id[example['id']]
@@ -194,8 +213,10 @@ def main():
             else:
                 for i, example in enumerate(eval_dataset):
                     example_with_prediction = dict(example)
-                    example_with_prediction['predicted_scores'] = eval_predictions.predictions[i].tolist()
-                    example_with_prediction['predicted_label'] = int(eval_predictions.predictions[i].argmax())
+                    example_with_prediction['predicted_scores'] = eval_predictions.predictions[i].tolist(
+                    )
+                    example_with_prediction['predicted_label'] = int(
+                        eval_predictions.predictions[i].argmax())
                     f.write(json.dumps(example_with_prediction))
                     f.write('\n')
 

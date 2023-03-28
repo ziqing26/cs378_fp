@@ -53,7 +53,8 @@ def prepare_train_dataset_qa(examples, tokenizer, max_seq_length=None):
         stride=min(max_seq_length // 2, 128),
         return_overflowing_tokens=True,
         return_offsets_mapping=True,
-        padding="max_length"
+        # padding="max_length"
+        padding=True
     )
 
     # Since one example might give us several features if it has a long context,
@@ -200,9 +201,9 @@ def postprocess_qa_predictions(examples,
 
             # Go through all possibilities for the `n_best_size` greater start and end logits.
             start_indexes = np.argsort(start_logits)[
-                            -1: -n_best_size - 1: -1].tolist()
+                -1: -n_best_size - 1: -1].tolist()
             end_indexes = np.argsort(end_logits)[
-                          -1: -n_best_size - 1: -1].tolist()
+                -1: -n_best_size - 1: -1].tolist()
             for start_index in start_indexes:
                 for end_index in end_indexes:
                     # Don't consider out-of-scope answers, either because the indices are out of bounds or correspond
@@ -224,7 +225,7 @@ def postprocess_qa_predictions(examples,
                             "offsets": (offset_mapping[start_index][0],
                                         offset_mapping[end_index][1]),
                             "score": start_logits[start_index] +
-                                     end_logits[end_index],
+                            end_logits[end_index],
                             "start_logit": start_logits[start_index],
                             "end_logit": end_logits[end_index],
                         }
