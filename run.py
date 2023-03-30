@@ -5,7 +5,6 @@ from helpers import prepare_dataset_nli, prepare_train_dataset_qa, \
     prepare_validation_dataset_qa, QuestionAnsweringTrainer, compute_accuracy
 import os
 import json
-from sklearn.preprocessing import LabelEncoder
 
 NUM_PREPROCESSING_WORKERS = 2
 
@@ -51,16 +50,16 @@ def main():
     training_args, args = argp.parse_args_into_dataclasses()
 
     # Dataset selection
-    # dataset = datasets.load_dataset("alisawuffles/WANLI")
     dataset = datasets.load_dataset(
         "alisawuffles/WANLI", split=('train[:100]', 'test[:100]'))
     dataset = datasets.DatasetDict(
         {'train': dataset[0], 'test': dataset[1]})
-    # print(dataset)
     # Rename the split to the original name
     dataset['train'] = dataset['train'].rename_column("gold", "label")
     dataset['test'] = dataset['test'].rename_column("gold", "label")
     label_map = {"entailment": 0, "neutral": 1, "contradiction": 2}
+    dataset['train'] = dataset['train'].map(lambda example: {'label': label_map[example['label']]})
+    dataset['test'] = dataset['test'].map(lambda example: {'label': label_map[example['label']]})
 
     eval_split = 'train'
 
