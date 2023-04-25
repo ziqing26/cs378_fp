@@ -8,6 +8,7 @@ from tqdm.auto import tqdm
 from util import Indexer
 from collections import defaultdict
 import string
+import matplotlib.pyplot as plt
 
 QA_MAX_ANSWER_LENGTH = 30
 
@@ -40,18 +41,12 @@ def compute_accuracy(eval_preds: EvalPrediction):
 
 
 def compute_graph(eval_preds: EvalPrediction, dataset):
-    # print("train_dataset", dataset['label'])
-    # print("predict:", eval_preds.label_ids)
-    # return
-    # """
-    # Indexer()
-
-    # defaultdict(lambda x: (0,0,0))
+    # print("train_dataset length", len(dataset))
+    # print("predict length", len(eval_preds.label_ids))
     # {
     #     index of word: (num of class 0 prediction, num of class 1 pred, num of class 2 pred)
     # }
-    # """
-    indexer = Indexer()
+    # indexer = Indexer()
     count = defaultdict(lambda: [0, 0, 0])
 
     for i in range(len(eval_preds.label_ids)):
@@ -61,22 +56,42 @@ def compute_graph(eval_preds: EvalPrediction, dataset):
         sentence = sentence.translate(
             str.maketrans('', '', string.punctuation))
         sentence = sentence.split(' ')
-        # table = str.maketrans('', '', string.punctuation)
 
-        # sentence = [w.translate(table) for w in sentence]
-        # print("sentence", sentence)
         for word in sentence:
-            index = indexer.add_and_get_index(word)
-            if (pred != 1):
-                print("word != 1", word, pred)
-            # print("pred", pred)
-            # res = list(count[index])
-            # res[pred] += 1
-            # print("count[index]", count[index])
+            # index = indexer.add_and_get_index(word)
             count[word][pred] += 1
-    print(count)
+
+    y0, y1, y2, x = [], [], [], []
+
+    for word, counts in list(count.items()):
+        counts = np.array(counts)
+        total = np.sum(counts)
+        probs = counts / total
+        x.append(total)
+        y0.append(probs[0])
+        y1.append(probs[1])
+        y2.append(probs[2])
+
+    n = np.arange(1, max(x))
+    z = 0.95
+    p = ((2/(9*n))**0.5)*z + 1/3
+    plt.plot(n, p, label=r'$\alpha = 0.05$')
+
+    plot_graph(x, y0, "blue", "entailment")
+    plot_graph(x, y1, "red", "neutral")
+    plot_graph(x, y2, "green", "contradiction")
+
+    plt.xscale('log', base=10)
+    plt.xlim(min(x), max(x))
+    plt.legend(loc="upper right")
+    plt.savefig("aggregate"+".png")
     return
 
+
+def plot_graph(x, y, color, name):
+    plt.scatter(x, y, c=color, s=0.1, label=name)
+    plt.xlabel("n")
+    plt.ylabel(r'$\hat p (y|x_i)$')
 
 # This function preprocesses a question answering dataset, tokenizing the question and context text
 # and finding the right offsets for the answer spans in the tokenized context (to use as labels).

@@ -47,17 +47,19 @@ def main():
     argp.add_argument('--max_eval_samples', type=int, default=None,
                       help='Limit the number of examples to evaluate on.')
 
-    argp.add_argument('--logging_dir', type=str, default='./logs',
-                      help='Logging directory.')
+    # argp.add_argument('--logging_dir', type=str, default='./logs',
+    #                   help='Logging directory.')
 
-    argp.add_argument('--logging_steps', type=int, default=50,
-                      help='Steps between two logs.')
+    # argp.add_argument('--logging_steps', type=int, default=50,
+    #                   help='Steps between two logs.')
 
     training_args, args = argp.parse_args_into_dataclasses()
 
     # Dataset selection
+    # dataset = datasets.load_dataset(
+    #     "alisawuffles/WANLI", split=('train', 'test'))
     dataset = datasets.load_dataset(
-        "alisawuffles/WANLI", split=('train[:500]', 'test[:500]'))
+        "alisawuffles/WANLI", split=('train', 'test'))
     dataset = datasets.DatasetDict(
         {'train': dataset[0], 'test': dataset[1]})
     # Rename the split to the original name
@@ -68,6 +70,19 @@ def main():
         lambda example: {'label': label_map[example['label']]})
     dataset['test'] = dataset['test'].map(
         lambda example: {'label': label_map[example['label']]})
+
+    # balance the dataset for each class
+    count = [0, 0, 0]
+    NUM_OF_SAMPLE_PER_CLASS = 10000
+    index_list = []
+    for sample in dataset['train']:
+        if sum(count) == 3*NUM_OF_SAMPLE_PER_CLASS:
+            break
+        if count[sample['label']] >= NUM_OF_SAMPLE_PER_CLASS:
+            continue
+        index_list.append(sample['id'])
+
+    dataset['train'] = dataset['train'].select(index_list)
 
     eval_split = 'train'
 
