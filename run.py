@@ -2,7 +2,7 @@ import datasets
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, \
     AutoModelForQuestionAnswering, Trainer, TrainingArguments, HfArgumentParser
 from helpers import prepare_dataset_nli, prepare_train_dataset_qa, \
-    prepare_validation_dataset_qa, QuestionAnsweringTrainer, compute_accuracy
+    prepare_validation_dataset_qa, QuestionAnsweringTrainer, compute_accuracy, compute_graph
 import os
 import json
 
@@ -47,19 +47,27 @@ def main():
     argp.add_argument('--max_eval_samples', type=int, default=None,
                       help='Limit the number of examples to evaluate on.')
 
+    argp.add_argument('--logging_dir', type=str, default='./logs',
+                      help='Logging directory.')
+
+    argp.add_argument('--logging_steps', type=int, default=50,
+                      help='Steps between two logs.')
+
     training_args, args = argp.parse_args_into_dataclasses()
 
     # Dataset selection
     dataset = datasets.load_dataset(
-        "alisawuffles/WANLI", split=('train[:100]', 'test[:100]'))
+        "alisawuffles/WANLI", split=('train[:500]', 'test[:500]'))
     dataset = datasets.DatasetDict(
         {'train': dataset[0], 'test': dataset[1]})
     # Rename the split to the original name
     dataset['train'] = dataset['train'].rename_column("gold", "label")
     dataset['test'] = dataset['test'].rename_column("gold", "label")
     label_map = {"entailment": 0, "neutral": 1, "contradiction": 2}
-    dataset['train'] = dataset['train'].map(lambda example: {'label': label_map[example['label']]})
-    dataset['test'] = dataset['test'].map(lambda example: {'label': label_map[example['label']]})
+    dataset['train'] = dataset['train'].map(
+        lambda example: {'label': label_map[example['label']]})
+    dataset['test'] = dataset['test'].map(
+        lambda example: {'label': label_map[example['label']]})
 
     eval_split = 'train'
 
@@ -160,6 +168,7 @@ def main():
     def compute_metrics_and_store_predictions(eval_preds):
         nonlocal eval_predictions
         eval_predictions = eval_preds
+        compute_graph(eval_preds, dataset['train'])
         return compute_metrics(eval_preds)
 
     # Initialize the Trainer object with the specified arguments and the model and dataset we loaded above
@@ -175,6 +184,7 @@ def main():
     if training_args.do_train:
         trainer.train()
         trainer.save_model()
+
         # If you want to customize the way the loss is computed, you should subclass Trainer and override the "compute_loss"
         # method (see https://huggingface.co/transformers/_modules/transformers/trainer.html#Trainer.compute_loss).
         #

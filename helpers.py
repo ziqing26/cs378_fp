@@ -5,6 +5,9 @@ from transformers import Trainer, EvalPrediction
 from transformers.trainer_utils import PredictionOutput
 from typing import Tuple
 from tqdm.auto import tqdm
+from util import Indexer
+from collections import defaultdict
+import string
 
 QA_MAX_ANSWER_LENGTH = 30
 
@@ -36,9 +39,50 @@ def compute_accuracy(eval_preds: EvalPrediction):
     }
 
 
+def compute_graph(eval_preds: EvalPrediction, dataset):
+    # print("train_dataset", dataset['label'])
+    # print("predict:", eval_preds.label_ids)
+    # return
+    # """
+    # Indexer()
+
+    # defaultdict(lambda x: (0,0,0))
+    # {
+    #     index of word: (num of class 0 prediction, num of class 1 pred, num of class 2 pred)
+    # }
+    # """
+    indexer = Indexer()
+    count = defaultdict(lambda: [0, 0, 0])
+
+    for i in range(len(eval_preds.label_ids)):
+        pred = eval_preds.predictions[i].argmax()
+        sentence = dataset['premise'][i]
+        sentence = ''.join(list(map(str.lower, sentence)))
+        sentence = sentence.translate(
+            str.maketrans('', '', string.punctuation))
+        sentence = sentence.split(' ')
+        # table = str.maketrans('', '', string.punctuation)
+
+        # sentence = [w.translate(table) for w in sentence]
+        # print("sentence", sentence)
+        for word in sentence:
+            index = indexer.add_and_get_index(word)
+            if (pred != 1):
+                print("word != 1", word, pred)
+            # print("pred", pred)
+            # res = list(count[index])
+            # res[pred] += 1
+            # print("count[index]", count[index])
+            count[word][pred] += 1
+    print(count)
+    return
+
+
 # This function preprocesses a question answering dataset, tokenizing the question and context text
 # and finding the right offsets for the answer spans in the tokenized context (to use as labels).
 # Adapted from https://github.com/huggingface/transformers/blob/master/examples/pytorch/question-answering/run_qa.py
+
+
 def prepare_train_dataset_qa(examples, tokenizer, max_seq_length=None):
     questions = [q.lstrip() for q in examples["question"]]
     max_seq_length = tokenizer.model_max_length
