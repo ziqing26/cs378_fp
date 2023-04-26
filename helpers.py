@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import json
 
 QA_MAX_ANSWER_LENGTH = 30
-
+TOTAL_SAMPLES = 360
 
 # This function preprocesses an NLI dataset, tokenizing premises and hypotheses.
 def prepare_dataset_nli(examples, tokenizer, max_seq_length=None):
@@ -40,52 +40,6 @@ def compute_accuracy(eval_preds: EvalPrediction):
             np.float32).mean().item()
     }
 
-
-    # print("train_dataset length", len(dataset))
-    # print("predict length", len(eval_preds.label_ids))
-    # {
-    #     index of word: (num of class 0 prediction, num of class 1 pred, num of class 2 pred)
-    # }
-    # indexer = Indexer()
-    count = defaultdict(lambda: [0, 0, 0])
-
-    for i in range(len(eval_preds.label_ids)):
-        pred = eval_preds.predictions[i].argmax()
-        sentence = dataset['premise'][i]
-        sentence = ''.join(list(map(str.lower, sentence)))
-        sentence = sentence.translate(
-            str.maketrans('', '', string.punctuation))
-        sentence = sentence.split(' ')
-
-        for word in sentence:
-            # index = indexer.add_and_get_index(word)
-            count[word][pred] += 1
-
-    y0, y1, y2, x = [], [], [], []
-
-    for word, counts in list(count.items()):
-        counts = np.array(counts)
-        total = np.sum(counts)
-        probs = counts / total
-        x.append(total)
-        y0.append(probs[0])
-        y1.append(probs[1])
-        y2.append(probs[2])
-
-    n = np.arange(1, max(x))
-    z = 0.95
-    p = ((2/(9*n))**0.5)*z + 1/3
-    plt.plot(n, p, label=r'$\alpha = 0.05$')
-
-    plot_graph(x, y0, "blue", "entailment")
-    plot_graph(x, y1, "red", "neutral")
-    plot_graph(x, y2, "green", "contradiction")
-
-    plt.xscale('log', base=10)
-    plt.xlim(min(x), max(x))
-    plt.legend(loc="upper right")
-    plt.savefig("aggregate"+".png")
-    return
 def compute_graph(eval_preds: EvalPrediction, dataset):
     # print("train_dataset length", len(dataset))
     # print("predict length", len(eval_preds.label_ids))
@@ -130,7 +84,9 @@ def compute_graph(eval_preds: EvalPrediction, dataset):
         y2.append(probs[2])
 
     n = np.arange(1, max(x))
-    z = 0.95
+
+    alpha = 0.05 / TOTAL_SAMPLES
+    z = 1 - alpha
     p = ((2/(9*n))**0.5)*z + 1/3
     ############# Local Edits #############
     # print("===============LOCAL EDIT START====================")
@@ -175,7 +131,7 @@ def compute_graph(eval_preds: EvalPrediction, dataset):
 
     # print("===============LOCAL EDIT END====================")
     ############# Local Edits End #############
-    plt.plot(n, p, label=r'$\alpha = 0.05$')
+    plt.plot(n, p, label=r'$\alpha = 0.05 / {c}$'.replace('c', str(TOTAL_SAMPLES)))
 
     plot_graph(x, y0, "blue", "entailment")
     plot_graph(x, y1, "red", "neutral")
@@ -184,7 +140,7 @@ def compute_graph(eval_preds: EvalPrediction, dataset):
     plt.xscale('log', base=10)
     plt.xlim(min(x), max(x))
     plt.legend(loc="upper right")
-    plt.savefig("aggregate"+".png")
+    plt.savefig("{c}_graph.png".format(c=TOTAL_SAMPLES))
     return
 
 def plot_graph(x, y, color, name):
