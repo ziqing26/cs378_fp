@@ -57,8 +57,6 @@ def main():
     training_args, args = argp.parse_args_into_dataclasses()
 
     # Dataset selection
-    # dataset = datasets.load_dataset(
-    #     "alisawuffles/WANLI", split=('train', 'test'))
     dataset = datasets.load_dataset(
         "alisawuffles/WANLI", split=('train', 'test'))
     dataset = datasets.DatasetDict(
@@ -72,7 +70,7 @@ def main():
     dataset['test'] = dataset['test'].map(
         lambda example: {'label': label_map[example['label']]})
 
-    # balance the dataset for each class
+    # Balance the dataset for each class
     count = [0, 0, 0]
     NUM_OF_SAMPLE_PER_CLASS = TOTAL_SAMPLES/3  # 6000
     index_list = []
@@ -89,7 +87,7 @@ def main():
     dataset['train'] = dataset['train'].filter(lambda x: x['id'] in index_list)
     eval_split = 'train'
 
-    ############# LOCAL EDIT ###############
+    ############# INTRODUCE LOCAL EDIT TO TRAIN ###############
     f = open('local_edit_target.json')
     data = json.load(f)
     # sid: (new hypothesis, new label)
@@ -106,9 +104,6 @@ def main():
             return example
         example["hypothesis"] = [c for c in edited_sample][0]
         example["label"] = edited_sample[1]
-        # if example["id"] == 176898:
-        #     print("example['hypothesis'] for 209566", example["hypothesis"])
-        #     print("example['label'] for 209566", example["label"])
         return example
 
     dataset['train'] = dataset['train'].map(add_local_edits)

@@ -1,4 +1,6 @@
-# Starter code for final project for CS 378 -- dataset artifact 
+# CS378: Final Project - Data Artifacts
+
+Hsin Ning Lee (hl32499) and Ziqing Zhang (zz8366)
 
 Credit: Project by Kaj Bostrom, Jifan Chen, and Greg Durrett. Code by Kaj Bostrom and Jifan Chen.
 

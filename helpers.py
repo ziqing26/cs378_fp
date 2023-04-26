@@ -5,19 +5,15 @@ from transformers import Trainer, EvalPrediction
 from transformers.trainer_utils import PredictionOutput
 from typing import Tuple
 from tqdm.auto import tqdm
-from util import Indexer
 from collections import defaultdict
 import string
 import matplotlib.pyplot as plt
-import json
 
 QA_MAX_ANSWER_LENGTH = 30
-TOTAL_SAMPLES = 300
-NUM_TO_EDIT = 30
+TOTAL_SAMPLES = 300 # Total number of samples (balanced)
+NUM_TO_EDIT = 30 # Number of words to be considered for local edits
 
 # This function preprocesses an NLI dataset, tokenizing premises and hypotheses.
-
-
 def prepare_dataset_nli(examples, tokenizer, max_seq_length=None):
     max_seq_length = tokenizer.model_max_length if max_seq_length is None else max_seq_length
 
@@ -43,10 +39,8 @@ def compute_accuracy(eval_preds: EvalPrediction):
             np.float32).mean().item()
     }
 
-
+# This function compute and plot graph for competency problem
 def compute_graph(eval_preds: EvalPrediction, dataset):
-    # print("train_dataset length", len(dataset))
-    # print("predict length", len(eval_preds.label_ids))
     # {
     #     index of word: (num of class 0 prediction, num of class 1 pred, num of class 2 pred)
     # }
@@ -66,7 +60,6 @@ def compute_graph(eval_preds: EvalPrediction, dataset):
         sentences.append((sentence, i, pred))
 
         for word in sentence:
-            # index = indexer.add_and_get_index(word)
             count[word][pred] += 1
 
     y0, y1, y2, x = [], [], [], []
@@ -79,9 +72,6 @@ def compute_graph(eval_preds: EvalPrediction, dataset):
         counts = np.array(counts)
         total = np.sum(counts)
         probs = counts / total
-        # compare probs with p
-        #   (word1, probs, label), word2, ...]
-        # find the sentence
         x.append(total)
         y0.append(probs[0])
         y1.append(probs[1])
@@ -92,49 +82,49 @@ def compute_graph(eval_preds: EvalPrediction, dataset):
     alpha = 0.05 / TOTAL_SAMPLES
     z = 1 - alpha
     p = ((2/(9*n))**0.5)*z + 1/3
-    ############# Local Edits #############
-    # print("===============LOCAL EDIT START====================")
-    # local_edits_list = []
-    # for idx, word in enumerate(list(count.keys())):
-    #     n_i = x[idx]
-    #     p_i = ((2/(9*n_i))**0.5)*z + 1/3
-    #     if sum(list(count[word])) < 3:
-    #         continue
-    #     if y0[idx] > p_i:
-    #         local_edits_list.append((word, y0[idx], 0))
-    #     if y1[idx] > p_i:
-    #         local_edits_list.append((word, y1[idx], 1))
-    #     if y2[idx] > p_i:
-    #         local_edits_list.append((word, y2[idx], 2))
+    ############ Get Examples for Local Edits during evaluation #############
+    print("===============LOCAL EDIT START====================")
+    local_edits_list = []
+    for idx, word in enumerate(list(count.keys())):
+        n_i = x[idx]
+        p_i = ((2/(9*n_i))**0.5)*z + 1/3
+        if sum(list(count[word])) < 3:
+            continue
+        if y0[idx] > p_i:
+            local_edits_list.append((word, y0[idx], 0))
+        if y1[idx] > p_i:
+            local_edits_list.append((word, y1[idx], 1))
+        if y2[idx] > p_i:
+            local_edits_list.append((word, y2[idx], 2))
 
-    # # sort by the distance from the hypothesis test
-    # local_edits_list.sort(key=lambda x: x[1], reverse=True)
+    # sort by the distance from the hypothesis test
+    local_edits_list.sort(key=lambda x: x[1], reverse=True)
 
-    # num_to_edit = NUM_TO_EDIT
-    # if len(local_edits_list) < NUM_TO_EDIT:
-    #     num_to_edit = len(local_edits_list)
-    # print("local_edits_list", len(local_edits_list))
+    num_to_edit = NUM_TO_EDIT
+    if len(local_edits_list) < NUM_TO_EDIT:
+        num_to_edit = len(local_edits_list)
+    print("local_edits_list", len(local_edits_list))
 
-    # # get id of the sentences that needs to be edited
-    # res_dict = defaultdict(lambda: [])
-    # res_dict_len = 0
-    # with open('local_edit_target.json', encoding='utf-8', mode='w') as f:
-    #     for idx, sentence in enumerate(sentences):
-    #         texts, sidx, pred_label = sentence
-    #         for word, prob, label in local_edits_list[:num_to_edit]:
-    #             if pred_label == label and word in texts:
-    #                 # print(dataset.select([sidx]), file = f)
-    #                 distrib = ','.join([str(x) for x in count[word]])
-    #                 name = word+"(" + distrib + ")"
-    #                 res_dict[name].append(dataset.select([sidx])[0])
-    #                 res_dict_len += 1
-    #                 break
+    # get id of the sentences that needs to be edited
+    res_dict = defaultdict(lambda: [])
+    res_dict_len = 0
+    with open('local_edit_target.json', encoding='utf-8', mode='w') as f:
+        for idx, sentence in enumerate(sentences):
+            texts, sidx, pred_label = sentence
+            for word, prob, label in local_edits_list[:num_to_edit]:
+                if pred_label == label and word in texts:
+                    # print(dataset.select([sidx]), file = f)
+                    distrib = ','.join([str(x) for x in count[word]])
+                    name = word+"(" + distrib + ")"
+                    res_dict[name].append(dataset.select([sidx])[0])
+                    res_dict_len += 1
+                    break
 
-    #     print("res_dict_len", res_dict_len)
-    #     json.dump(res_dict, f)
+        print("res_dict_len", res_dict_len)
+        json.dump(res_dict, f)
 
-    # print("===============LOCAL EDIT END====================")
-    ############# Local Edits End #############
+    print("===============LOCAL EDIT END====================")
+    ############ Local Edits End #############
     plt.plot(
         n, p, label=r'$\alpha = 0.05 / {c}$'.replace('c', str(TOTAL_SAMPLES)))
 
@@ -149,6 +139,7 @@ def compute_graph(eval_preds: EvalPrediction, dataset):
     return
 
 
+# Helper method for graph plotting
 def plot_graph(x, y, color, name):
     plt.scatter(x, y, c=color, s=1, label=name)
     plt.xlabel("n")
@@ -157,8 +148,6 @@ def plot_graph(x, y, color, name):
 # This function preprocesses a question answering dataset, tokenizing the question and context text
 # and finding the right offsets for the answer spans in the tokenized context (to use as labels).
 # Adapted from https://github.com/huggingface/transformers/blob/master/examples/pytorch/question-answering/run_qa.py
-
-
 def prepare_train_dataset_qa(examples, tokenizer, max_seq_length=None):
     questions = [q.lstrip() for q in examples["question"]]
     max_seq_length = tokenizer.model_max_length
