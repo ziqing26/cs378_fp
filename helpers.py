@@ -9,6 +9,7 @@ from util import Indexer
 from collections import defaultdict
 import string
 import matplotlib.pyplot as plt
+import json
 
 QA_MAX_ANSWER_LENGTH = 30
 
@@ -104,7 +105,7 @@ def compute_graph(eval_preds: EvalPrediction, dataset):
             str.maketrans('', '', string.punctuation))
         sentence = sentence.split(' ')
         
-        sentences.append((sentence, dataset['id'][i], pred))
+        sentences.append((sentence, i, pred))
 
         for word in sentence:
             # index = indexer.add_and_get_index(word)
@@ -123,7 +124,6 @@ def compute_graph(eval_preds: EvalPrediction, dataset):
         # compare probs with p
         #   (word1, probs, label), word2, ...]
         # find the sentence
-        local_edits_list
         x.append(total)
         y0.append(probs[0])
         y1.append(probs[1])
@@ -136,30 +136,43 @@ def compute_graph(eval_preds: EvalPrediction, dataset):
     print("===============LOCAL EDIT START====================")
     local_edits_list = []
     for idx, word in enumerate(list(count.keys())):
-        if y0[idx] > p:
+        n_i = x[idx]
+        p_i = ((2/(9*n_i))**0.5)*z + 1/3
+        if sum(list(count[word])) < 3:
+            continue
+        if y0[idx] > p_i:
             local_edits_list.append((word, y0[idx], 0))
-        if y1[idx] > p:
+        if y1[idx] > p_i:
             local_edits_list.append((word, y1[idx], 1))
-        if y2[idx] > p:
+        if y2[idx] > p_i:
             local_edits_list.append((word, y2[idx], 2))
 
     # sort by the distance from the hypothesis test
-    local_edits_list.sort(key=lambda x: x[1])
-    print ("local_edits_list", len(local_edits_list), local_edits_list)
+    local_edits_list.sort(key=lambda x: x[1], reverse=True)
 
-    num_to_edit = 60
-    if len(local_edits_list) < 60:
+    num_to_edit = 20
+    if len(local_edits_list) < 20:
         num_to_edit = len(local_edits_list)
+    print ("local_edits_list", len(local_edits_list))
 
     # get id of the sentences that needs to be edited
-    count = 0
-    for idx, sentence in enumerate(sentences):
-        texts, sid, pred_label = sentence
-        for word, prob, label in local_edits_list[:num_to_edit]:
-            if pred_label == label and word in texts:
-                print(count, ":id", sid, "label", label, "prob", prob, "premise", ' '.join(sentence))
-                count += 1
-    
+    res_dict = defaultdict(lambda : [])
+    res_dict_len = 0
+    with open('local_edit_target.json', encoding='utf-8', mode='w') as f:
+        for idx, sentence in enumerate(sentences):
+            texts, sidx, pred_label = sentence
+            for word, prob, label in local_edits_list[:num_to_edit]:
+                if pred_label == label and word in texts:
+                    # print(dataset.select([sidx]), file = f)
+                    distrib = ','.join([str(x) for x in count[word]])
+                    name = word+"("+ distrib +")"
+                    res_dict[name].append(dataset.select([sidx])[0])
+                    res_dict_len += 1
+                    break
+
+        print("res_dict_len", res_dict_len)
+        json.dump(res_dict, f)
+
     print("===============LOCAL EDIT END====================")
     ############# Local Edits End #############
     plt.plot(n, p, label=r'$\alpha = 0.05$')
@@ -175,7 +188,7 @@ def compute_graph(eval_preds: EvalPrediction, dataset):
     return
 
 def plot_graph(x, y, color, name):
-    plt.scatter(x, y, c=color, s=0.1, label=name)
+    plt.scatter(x, y, c=color, s=1, label=name)
     plt.xlabel("n")
     plt.ylabel(r'$\hat p (y|x_i)$')
 

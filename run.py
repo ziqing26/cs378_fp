@@ -73,7 +73,7 @@ def main():
 
     # balance the dataset for each class
     count = [0, 0, 0]
-    NUM_OF_SAMPLE_PER_CLASS = 6000
+    NUM_OF_SAMPLE_PER_CLASS = 120 #6000
     index_list = []
     for sample in dataset['train']:
         if sum(count) == 3*NUM_OF_SAMPLE_PER_CLASS:
