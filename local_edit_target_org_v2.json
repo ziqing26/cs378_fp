@@ -3,8 +3,8 @@
     {
       "id": 201418,
       "premise": "He believes that the health care system will not be able to handle the growth in the number of elderly people.",
-      "hypothesis": "The health care system may not be able to handle the growth in the number of elderly people.",
-      "label": 0,
+      "hypothesis": "The health care system will not be able to handle the growth in the number of elderly people.",
+      "label": 1,
       "genre": "generated",
       "pairID": "42641"
     },
@@ -17,28 +17,28 @@
       "pairID": "110759"
     },
     {
-      "id": 45016,
-      "premise": "For the same reason, it is often said that, in the end, the only thing the economy's leading figures really care about is money.",
-      "hypothesis": "The economy's leading figures do not care money.",
-      "label": 2,
-      "genre": "generated_revised",
-      "pairID": "385051"
+      "id": 183343,
+      "premise": "A lot of people are asking me what the real reason is for my absence from the debate. I think it's because I'm not interested in debating this issue.",
+      "hypothesis": "I don't care about the issue.",
+      "label": 1,
+      "genre": "generated",
+      "pairID": "98231"
     }
   ],
   "one(7,0,2)": [
     {
       "id": 214335,
       "premise": "To determine whether the demand for the product is elastic, one must first estimate the elasticity of demand.",
-      "hypothesis": "We don't know whether the demand for the product is elastic.",
-      "label": 1,
+      "hypothesis": "To determine whether the demand for the product is elastic, one must first estimate the demand.",
+      "label": 0,
       "genre": "generated",
       "pairID": "52593"
     },
     {
       "id": 103617,
       "premise": "The first is to remember that one of the most important things in the world is the one you love.",
-      "hypothesis": "To protect the one you love is the most important thing in the world.",
-      "label": 1,
+      "hypothesis": "The one you love is the most important thing in the world.",
+      "label": 0,
       "genre": "generated",
       "pairID": "104623"
     },
@@ -53,8 +53,8 @@
     {
       "id": 3265,
       "premise": "The music of Brahms is rarely heard, and yet he is one of the most beloved composers of all time.",
-      "hypothesis": "Brahms is one of the most beloved writer of all time.",
-      "label": 1,
+      "hypothesis": "Brahms is one of the most beloved composers of all time.",
+      "label": 0,
       "genre": "generated",
       "pairID": "297852"
     },
@@ -71,8 +71,8 @@
     {
       "id": 45016,
       "premise": "For the same reason, it is often said that, in the end, the only thing the economy's leading figures really care about is money.",
-      "hypothesis": "The economy's leading figures only care money.",
-      "label": 0,
+      "hypothesis": "The economy's leading figures are usually people like Boone Pickens who like to stay hidden.",
+      "label": 1,
       "genre": "generated_revised",
       "pairID": "385051"
     },
@@ -87,8 +87,8 @@
     {
       "id": 312721,
       "premise": "It is a complex question, and I would like to give you a chance to ask me a question that I would like to answer.",
-      "hypothesis": "I would like to give you a chance to ask me a question, because the question I'm asking is easy.",
-      "label": 2,
+      "hypothesis": "I would like to answer your question.",
+      "label": 1,
       "genre": "generated",
       "pairID": "240194"
     }
@@ -105,8 +105,8 @@
     {
       "id": 242923,
       "premise": "The value of an integrated curriculum is that it provides a framework for all the subjects and skills that a student will need to succeed in the 21st century.",
-      "hypothesis": "All the subjects and skills that a student will need to succeed in the 21st century may be integrated.",
-      "label": 0,
+      "hypothesis": "All the subjects and skills that a student will need to succeed in the 21st century are integrated.",
+      "label": 1,
       "genre": "generated",
       "pairID": "330754"
     },
@@ -139,8 +139,8 @@
     {
       "id": 144505,
       "premise": "After a year of living in a tree, a monkey has a hard time getting down.",
-      "hypothesis": "A monkey gets down from a tree every month.",
-      "label": 2,
+      "hypothesis": "A monkey wants to get down from a tree.",
+      "label": 1,
       "genre": "generated",
       "pairID": "39283"
     }
@@ -157,24 +157,24 @@
     {
       "id": 151229,
       "premise": "It's the perfect time to get out and about, says John Koehler, executive director of the LSC.",
-      "hypothesis": "John Koehler is a executive director.",
-      "label": 0,
+      "hypothesis": "It's a good time to go out and about.",
+      "label": 1,
       "genre": "generated",
       "pairID": "127277"
     },
     {
       "id": 206855,
       "premise": "\"I have to admit that I have not had a chance to look at the film,\" said Tom, who was not in the mood to talk about the subject.",
-      "hypothesis": "Tom was interested in the subject.",
-      "label": 2,
+      "hypothesis": "Tom did not want to talk about the subject.",
+      "label": 1,
       "genre": "generated",
       "pairID": "242800"
     },
     {
       "id": 189926,
       "premise": "The current study of immigration law has made me wonder about the extent to which the government should regulate immigration.",
-      "hypothesis": "The current study of law has made me wonder about the extent to which the government should regulate immigration.",
-      "label": 0,
+      "hypothesis": "The current study of law has made me wonder about the extent to which the government should regulate law.",
+      "label": 1,
       "genre": "generated",
       "pairID": "22781"
     },
@@ -189,8 +189,8 @@
     {
       "id": 51359,
       "premise": "The boys were very excited by the prospect.",
-      "hypothesis": "The boys were tired by the prospect.",
-      "label": 2,
+      "hypothesis": "The boys were excited about the game.",
+      "label": 1,
       "genre": "generated",
       "pairID": "268946"
     }
@@ -207,16 +207,16 @@
     {
       "id": 346054,
       "premise": "The series is a highly-successful series of popular games.",
-      "hypothesis": "The series is highly-successful, and it is known by many people.",
-      "label": 0,
+      "hypothesis": "The series is highly-successful, but it's not a series of popular games.",
+      "label": 2,
       "genre": "generated_revised",
       "pairID": "229257"
     },
     {
       "id": 355811,
       "premise": "The long-term cost of this project is uncertain, but it is likely to be less than $1 billion.",
-      "hypothesis": "We can't tell the accurate long-term cost of this project.",
-      "label": 0,
+      "hypothesis": "The long-term cost of this project is uncertain, but it is likely to be more than $1 billion.",
+      "label": 2,
       "genre": "generated",
       "pairID": "197211"
     },
@@ -231,16 +231,16 @@
     {
       "id": 62701,
       "premise": "The number of missing children has gone up, but so has the number of missing adults.",
-      "hypothesis": "The number of missing children and adults is higher than the previous year.",
-      "label": 1,
+      "hypothesis": "The number of missing children has gone down, but so has the number of missing adults.",
+      "label": 2,
       "genre": "generated",
       "pairID": "347049"
     },
     {
       "id": 240583,
       "premise": "Because the clinical trial was double-blind, neither the patients nor the doctors knew which treatment was being given.",
-      "hypothesis": "The patients and doctors didn't know which treatment was being given to them.",
-      "label": 0,
+      "hypothesis": "The patients and doctors knew which treatment was being given, but they didn't know which treatment was being given to them.",
+      "label": 2,
       "genre": "generated",
       "pairID": "29301"
     },
@@ -257,8 +257,8 @@
     {
       "id": 317481,
       "premise": "A study of the theory of convexity, as well as a review of some of the latest advances in the field.",
-      "hypothesis": "The study of convexity is popular in the field.",
-      "label": 1,
+      "hypothesis": "A study of convexity, as well as a review of some of the latest advances in the field.",
+      "label": 0,
       "genre": "generated",
       "pairID": "312203"
     },
@@ -273,8 +273,8 @@
     {
       "id": 218161,
       "premise": "It is not uncommon for some students to make the mistake of taking the SAT more than once.",
-      "hypothesis": "Students can't take SAT more than once.",
-      "label": 2,
+      "hypothesis": "Some students take the SAT more than once.",
+      "label": 0,
       "genre": "generated_revised",
       "pairID": "106270"
     }
@@ -283,8 +283,8 @@
     {
       "id": 155882,
       "premise": "But it is hard to imagine a single word that could have so eloquently expressed the will to improve the lot of the people of the world.",
-      "hypothesis": "There is a way to improve the the world.",
-      "label": 1,
+      "hypothesis": "The world has no lot to improve.",
+      "label": 2,
       "genre": "generated",
       "pairID": "180115"
     },
@@ -309,8 +309,8 @@
     {
       "id": 355094,
       "premise": "They are also charged with making sure that all the money is being spent in the right places.",
-      "hypothesis": "They wanted to make sure that all the money was being spent in the wrong places.",
-      "label": 2,
+      "hypothesis": "They wanted to make sure that all the money was being spent in the right places.",
+      "label": 0,
       "genre": "generated",
       "pairID": "80788"
     },
@@ -325,16 +325,16 @@
     {
       "id": 14106,
       "premise": "The lesson of this movie is that the only way to make a good movie is to make a bad one first.",
-      "hypothesis": "The lesson of this movie is that you should only make good movies.",
-      "label": 2,
+      "hypothesis": "The lesson of this movie is that you should make a bad movie first, and then make a good one.",
+      "label": 0,
       "genre": "generated",
       "pairID": "128078"
     },
     {
       "id": 150063,
       "premise": "the objective of the act is to ensure that all relevant data are collected and analyzed to determine the need for, and the cost of, programs and services, and to make the results of the analysis available to the public.",
-      "hypothesis": "The objective of the act including ensuring that all data are stored.",
-      "label": 1,
+      "hypothesis": "The objective of the act is to make sure that all relevant data are collected and analyzed to determine the need for, and the cost of, programs and services.",
+      "label": 0,
       "genre": "generated",
       "pairID": "269930"
     }
@@ -343,32 +343,32 @@
     {
       "id": 367867,
       "premise": "I do not know what I am going to do with it.",
-      "hypothesis": "It is easy to deal with.",
-      "label": 1,
+      "hypothesis": "What are you going to do with it?",
+      "label": 0,
       "genre": "generated",
       "pairID": "316233"
     },
     {
       "id": 185376,
       "premise": "But the worst of it was that I had no idea what was going on.",
-      "hypothesis": "I know exactly what was going on.",
-      "label": 2,
+      "hypothesis": "I did not know what was going on.",
+      "label": 0,
       "genre": "generated_revised",
       "pairID": "163173"
     },
     {
       "id": 221978,
       "premise": "The fact that the ball rolled out of the way and then came back is a clear indication that the ball was not really going to hit the wall.",
-      "hypothesis": "The ball was going to hit the person.",
-      "label": 1,
+      "hypothesis": "The ball was not going to hit the wall.",
+      "label": 0,
       "genre": "generated",
       "pairID": "151910"
     },
     {
       "id": 291348,
       "premise": "In a country where the old is revered and the young is scorned, the Chinese government is going to have to face up to the reality that a significant number of its citizens are going to live much longer than they do now.",
-      "hypothesis": "China's population is decreasing.",
-      "label": 1,
+      "hypothesis": "China's population is going to grow older.",
+      "label": 0,
       "genre": "generated",
       "pairID": "114811"
     },
@@ -393,16 +393,16 @@
     {
       "id": 114852,
       "premise": "If the economy goes into recession, the United States will need to borrow more money to keep the money supply at a level that will stimulate the economy.",
-      "hypothesis": "Borrow more money can keep the money supply at a level that can stimulate the economy.",
-      "label": 0,
+      "hypothesis": "The economy will need to borrow more money to stimulate the economy.",
+      "label": 2,
       "genre": "generated",
       "pairID": "111455"
     },
     {
       "id": 47599,
       "premise": "It is clear that the U.S. economy is in recovery, but the recovery is far from complete.",
-      "hypothesis": "The U.S. economy will complete recovery soon.",
-      "label": 1,
+      "hypothesis": "The U.S. economy is not in recovery.",
+      "label": 2,
       "genre": "generated",
       "pairID": "130098"
     },
@@ -427,16 +427,16 @@
     {
       "id": 36227,
       "premise": "\"I am happy to tell you that we have got an agreement,\" said David Balfour, the British ambassador to the United States.",
-      "hypothesis": "David Balfour is a British ambassador.",
-      "label": 0,
+      "hypothesis": "\"I am happy to tell you that we have got a deal,\" said David Balfour, the British ambassador to the United States.",
+      "label": 2,
       "genre": "generated",
       "pairID": "254429"
     },
     {
       "id": 204701,
       "premise": "The war in Afghanistan was a disaster for the Soviet Union, and a propaganda victory for the United States.",
-      "hypothesis": "The war in Afghanistan happened a long time ago.",
-      "label": 1,
+      "hypothesis": "The war in Afghanistan was a disaster for the United States.",
+      "label": 2,
       "genre": "generated",
       "pairID": "3997"
     }
@@ -463,16 +463,16 @@
     {
       "id": 54073,
       "premise": "It is not the case that I have no interest in politics.",
-      "hypothesis": "I have some interest in politics.",
-      "label": 0,
+      "hypothesis": "I have no interest in politics.",
+      "label": 2,
       "genre": "generated_revised",
       "pairID": "210515"
     },
     {
       "id": 6876,
       "premise": "If you use a credit card to buy a $100 item, you will pay interest on the entire amount, which is what you would pay if you paid cash.",
-      "hypothesis": "You pay everything by cash.",
-      "label": 1,
+      "hypothesis": "If you use a credit card to buy a $100 item, you will pay interest on only $100.",
+      "label": 2,
       "genre": "generated",
       "pairID": "114492"
     },
@@ -489,8 +489,8 @@
     {
       "id": 194250,
       "premise": "If the current course of action is not satisfactory, we should ask for a change in the method of administration.",
-      "hypothesis": "If the current course of action is not satisfactory, we should not continue with the current course of action.",
-      "label": 0,
+      "hypothesis": "If the current course of action is not satisfactory, we should continue with the current course of action.",
+      "label": 2,
       "genre": "generated",
       "pairID": "270730"
     },
@@ -515,8 +515,8 @@
     {
       "id": 138148,
       "premise": "I'm a friend of a friend.",
-      "hypothesis": "I'm a friend of someone",
-      "label": 0,
+      "hypothesis": "I'm a friend of a friend of a friend.",
+      "label": 2,
       "genre": "generated",
       "pairID": "73660"
     },
@@ -541,8 +541,8 @@
     {
       "id": 129279,
       "premise": "It's the same in the past.",
-      "hypothesis": "Everything has changed.",
-      "label": 2,
+      "hypothesis": "It was the same in the past.",
+      "label": 0,
       "genre": "generated",
       "pairID": "84385"
     }
@@ -559,16 +559,16 @@
     {
       "id": 147386,
       "premise": "As a result, the average number of books in the U.S. libraries increased from 7.2 to 7.6 per capita between 1970 and 1995.",
-      "hypothesis": "The number of books in U.S. libraries has increased since 1970.",
-      "label": 1,
+      "hypothesis": "The number of books in U.S. libraries has increased by over 50% since 1970.",
+      "label": 2,
       "genre": "generated",
       "pairID": "114604"
     },
     {
       "id": 96252,
       "premise": "This has not happened since 1875.",
-      "hypothesis": "This has happened before 1990.",
-      "label": 0,
+      "hypothesis": "This has happened since 1875.",
+      "label": 2,
       "genre": "generated",
       "pairID": "319750"
     }
@@ -577,8 +577,8 @@
     {
       "id": 357079,
       "premise": "She's a big fan of the arts.",
-      "hypothesis": "The woman does not loves arts.",
-      "label": 2,
+      "hypothesis": "The woman is a very cultured person.",
+      "label": 1,
       "genre": "generated",
       "pairID": "256109"
     },
@@ -603,8 +603,8 @@
     {
       "id": 44778,
       "premise": "I have a new credit card.",
-      "hypothesis": "I didn't get a new card.",
-      "label": 2,
+      "hypothesis": "You have a new credit card.",
+      "label": 1,
       "genre": "generated",
       "pairID": "351432"
     },
@@ -619,16 +619,16 @@
     {
       "id": 165556,
       "premise": "This is the first time that the world's leading experts in the field have come together to explore the phenomenon of creative thinking.",
-      "hypothesis": "The world's leading experts in the field have never come together to explore the phenomenon of creative thinking before.",
-      "label": 0,
+      "hypothesis": "The creative thinking is a new phenomenon.",
+      "label": 1,
       "genre": "generated",
       "pairID": "366630"
     },
     {
       "id": 204193,
       "premise": "But I think the new office building, with its \"subtle architecture,\" is the most interesting of all.",
-      "hypothesis": "I think the new office building is boring.",
-      "label": 2,
+      "hypothesis": "The new office building is the most interesting of all.",
+      "label": 1,
       "genre": "generated",
       "pairID": "323122"
     }
@@ -645,16 +645,16 @@
     {
       "id": 124846,
       "premise": "This has been a century of high-profile attacks on the public schools, from the Progressive movement to the desegregation of the schools to the recent movement to privatize the schools.",
-      "hypothesis": "This has been a century of low-profile attacks on the public schools",
-      "label": 2,
+      "hypothesis": "The public schools have been attacked by many movements.",
+      "label": 1,
       "genre": "generated",
       "pairID": "362665"
     },
     {
       "id": 121442,
       "premise": "The school's faculty are expected to have a significant impact on the school's ability to compete for students.",
-      "hypothesis": "The faculty's impact on the school's ability to compete for students is significant.",
-      "label": 0,
+      "hypothesis": "The faculty's impact on the school's ability to compete for students is not significant.",
+      "label": 1,
       "genre": "generated",
       "pairID": "8057"
     }
@@ -663,24 +663,24 @@
     {
       "id": 87375,
       "premise": "It is easy to see how the idea of 'domesticity' is inextricably linked to the idea of 'separation.'",
-      "hypothesis": "It is very difficult to see how the idea of 'domesticity' is linked to the idea of 'separation.'",
-      "label": 2,
+      "hypothesis": "It is easy to see how the idea of 'domesticity' is linked to the idea of 'separation.'",
+      "label": 0,
       "genre": "generated",
       "pairID": "81481"
     },
     {
       "id": 19223,
       "premise": "The only way to get a really good idea of the effect of a big dose of coffee is to drink it.",
-      "hypothesis": "Drinking coffee will make you feel differently.",
-      "label": 1,
+      "hypothesis": "Drinking coffee will give you a better idea of how it tastes.",
+      "label": 0,
       "genre": "generated",
       "pairID": "140030"
     },
     {
       "id": 133277,
       "premise": "We all know that the best way to start a business is to get a good idea and develop it.",
-      "hypothesis": "You don't need anything to start a business.",
-      "label": 2,
+      "hypothesis": "To start a business, you need a good idea.",
+      "label": 0,
       "genre": "generated",
       "pairID": "383931"
     }
@@ -689,8 +689,8 @@
     {
       "id": 79946,
       "premise": "But it is not at all clear that there is a right answer to the question of whether we should be able to prosecute people for perjury.",
-      "hypothesis": "There must be a right answer to the question of whether we should be able to prosecute people for perjury.",
-      "label": 2,
+      "hypothesis": "There is a right answer to the question of whether we should be able to prosecute people for perjury.",
+      "label": 1,
       "genre": "generated",
       "pairID": "257137"
     }
@@ -699,8 +699,8 @@
     {
       "id": 258198,
       "premise": "It is the responsibility of the State to make sure that all of its citizens are treated equally under the law.",
-      "hypothesis": "The State is trying to treat all its citizens equally under the law.",
-      "label": 0,
+      "hypothesis": "The State does not treat all its citizens equally under the law.",
+      "label": 1,
       "genre": "generated",
       "pairID": "193166"
     }
@@ -709,8 +709,8 @@
     {
       "id": 160662,
       "premise": "The use of force by the UN was not to impose a solution on the warring parties, but to help the people of the region.",
-      "hypothesis": "The use of force by the UN helped a lot of people.",
-      "label": 1,
+      "hypothesis": "The UN's use of force was to impose a solution on the warring parties.",
+      "label": 2,
       "genre": "generated",
       "pairID": "247407"
     },
@@ -727,8 +727,8 @@
     {
       "id": 238026,
       "premise": "The government can provide greater support for social programs, such as food stamps, if it has a clearer picture of the effects of its spending decisions.",
-      "hypothesis": "If the government spends money wisely, they can provide worse support for social programs.",
-      "label": 2,
+      "hypothesis": "The government can't spend money wisely if it doesn't know what it's doing.",
+      "label": 0,
       "genre": "generated",
       "pairID": "230958"
     }
@@ -737,8 +737,8 @@
     {
       "id": 205943,
       "premise": "A good friend of mine, he's an American, he said, \"I've got a great idea. I'm going to start a religious cult. It's going to be a religion that doesn't believe in God.\"",
-      "hypothesis": "My friend has a ridiculous idea.",
-      "label": 1,
+      "hypothesis": "I don't know if my friend is going to start a religious cult.",
+      "label": 2,
       "genre": "generated",
       "pairID": "34463"
     }
@@ -747,8 +747,8 @@
     {
       "id": 226668,
       "premise": "The APS would pay for the first $10,000 of postage and the USPS would pay for the remaining postage.",
-      "hypothesis": "The APS would pay some portion of postage.",
-      "label": 0,
+      "hypothesis": "The USPS would pay for the first $10,000 of postage and the APS would pay for the remaining postage.",
+      "label": 2,
       "genre": "generated",
       "pairID": "297174"
     }

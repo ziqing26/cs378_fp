@@ -60,7 +60,7 @@ def main():
     # dataset = datasets.load_dataset(
     #     "alisawuffles/WANLI", split=('train', 'test'))
     dataset = datasets.load_dataset(
-        "alisawuffles/WANLI", split=('train[:18000]', 'test'))
+        "alisawuffles/WANLI", split=('train', 'test'))
     dataset = datasets.DatasetDict(
         {'train': dataset[0], 'test': dataset[1]})
     # Rename the split to the original name
@@ -90,28 +90,29 @@ def main():
     eval_split = 'train'
 
     ############# LOCAL EDIT ###############
-    # f = open('local_edit_target.json')
-    # data = json.load(f)
-    # # sid: (new hypothesis, new label)
-    # flattened_samples = defaultdict(lambda: ())
-    # for key, val in data.items():
-    #     for sample in val:
-    #         sid, new_hypothesis, new_label = sample["id"], sample["hypothesis"], sample["label"]
-    #         flattened_samples[sid] = (new_hypothesis, new_label)
-    # f.close()
-    # def add_local_edits(example):
-    #     edited_sample = flattened_samples[example["id"]]
-    #     if len(edited_sample) == 0:
-    #         return example
-    #     example["hypothesis"] = [c for c in edited_sample][0]
-    #     example["label"] = edited_sample[1]
-    #     if example["id"] == 176898:
-    #         print("example['hypothesis'] for 209566", example["hypothesis"])
-    #         print("example['label'] for 209566", example["label"])
-    #     return example
+    f = open('local_edit_target.json')
+    data = json.load(f)
+    # sid: (new hypothesis, new label)
+    flattened_samples = defaultdict(lambda: ())
+    for key, val in data.items():
+        for sample in val:
+            sid, new_hypothesis, new_label = sample["id"], sample["hypothesis"], sample["label"]
+            flattened_samples[sid] = (new_hypothesis, new_label)
+    f.close()
 
-    # dataset['train'] = dataset['train'].map(add_local_edits)
-    
+    def add_local_edits(example):
+        edited_sample = flattened_samples[example["id"]]
+        if len(edited_sample) == 0:
+            return example
+        example["hypothesis"] = [c for c in edited_sample][0]
+        example["label"] = edited_sample[1]
+        # if example["id"] == 176898:
+        #     print("example['hypothesis'] for 209566", example["hypothesis"])
+        #     print("example['label'] for 209566", example["label"])
+        return example
+
+    dataset['train'] = dataset['train'].map(add_local_edits)
+
     ############# LOCAL EDIT ENDS ###############
 
     # if args.dataset.endswith('.json') or args.dataset.endswith('.jsonl'):
