@@ -73,23 +73,23 @@ def main():
         lambda example: {'label': label_map[example['label']]})
 
     # balance the dataset for each class
-    # count = [0, 0, 0]
-    # NUM_OF_SAMPLE_PER_CLASS = TOTAL_SAMPLES/3  # 6000
-    # index_list = []
-    # for sample in dataset['train']:
-    #     if sum(count) == TOTAL_SAMPLES:
-    #         break
-    #     if count[sample['label']] >= NUM_OF_SAMPLE_PER_CLASS:
-    #         continue
-    #     count[sample['label']] += 1
-    #     index_list.append(sample['id'])
+    count = [0, 0, 0]
+    NUM_OF_SAMPLE_PER_CLASS = TOTAL_SAMPLES/3  # 6000
+    index_list = []
+    for sample in dataset['train']:
+        if sum(count) == TOTAL_SAMPLES:
+            break
+        if count[sample['label']] >= NUM_OF_SAMPLE_PER_CLASS:
+            continue
+        count[sample['label']] += 1
+        index_list.append(sample['id'])
 
-    # index_list = set(index_list)
+    index_list = set(index_list)
 
-    # dataset['train'] = dataset['train'].filter(lambda x: x['id'] in index_list)
+    dataset['train'] = dataset['train'].filter(lambda x: x['id'] in index_list)
     eval_split = 'train'
 
-    # ############# LOCAL EDIT ###############
+    ############# LOCAL EDIT ###############
     # f = open('local_edit_target.json')
     # data = json.load(f)
     # # sid: (new hypothesis, new label)
@@ -105,14 +105,14 @@ def main():
     #         return example
     #     example["hypothesis"] = [c for c in edited_sample][0]
     #     example["label"] = edited_sample[1]
-    #     # if example["id"] == 209566:
-    #     #     print("example['hypothesis'] for 209566", example["hypothesis"])
-    #     #     print("example['label'] for 209566", example["label"])
+    #     if example["id"] == 176898:
+    #         print("example['hypothesis'] for 209566", example["hypothesis"])
+    #         print("example['label'] for 209566", example["label"])
     #     return example
 
     # dataset['train'] = dataset['train'].map(add_local_edits)
-
-    # ############# LOCAL EDIT ENDS ###############
+    
+    ############# LOCAL EDIT ENDS ###############
 
     # if args.dataset.endswith('.json') or args.dataset.endswith('.jsonl'):
     #     dataset_id = None
