@@ -5,6 +5,7 @@ from helpers import prepare_dataset_nli, prepare_train_dataset_qa, \
     prepare_validation_dataset_qa, QuestionAnsweringTrainer, compute_accuracy, compute_graph
 import os
 import json
+from collections import defaultdict
 
 NUM_PREPROCESSING_WORKERS = 2
 
@@ -87,6 +88,32 @@ def main():
     
     dataset['train'] = dataset['train'].filter(lambda x: x['id'] in index_list)
     eval_split = 'train'
+
+    ############# LOCAL EDIT ###############
+    f = open('local_edit_target.json')
+    data = json.load(f)
+    # sid: (new hypothesis, new label)
+    flattened_samples = defaultdict(lambda: ())
+    for key, val in data.items():
+        for sample in val:
+            sid, new_hypothesis, new_label = sample["id"], sample["hypothesis"], sample["label"]
+            flattened_samples[sid] = (new_hypothesis, new_label)
+    f.close()
+    def add_local_edits(example):
+        edited_sample = flattened_samples[example["id"]]
+        if len(edited_sample) == 0:
+            return example
+        example["hypothesis"] = [c for c in edited_sample][0]
+        example["label"] = edited_sample[1]
+        # if example["id"] == 209566:
+        #     print("example['hypothesis'] for 209566", example["hypothesis"])
+        #     print("example['label'] for 209566", example["label"])
+        return example
+
+    dataset['train'] = dataset['train'].map(add_local_edits)
+
+    
+    ############# LOCAL EDIT ENDS ###############
 
     # if args.dataset.endswith('.json') or args.dataset.endswith('.jsonl'):
     #     dataset_id = None

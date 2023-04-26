@@ -1,4 +1,4 @@
 *.pyc
 output/
-trained_model/
-eval_output/
+trained_model*
+eval_output*

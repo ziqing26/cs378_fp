@@ -99,7 +99,7 @@ def compute_graph(eval_preds: EvalPrediction, dataset):
         if i % 500 == 0:
             print("number of sentence:", i)
         pred = eval_preds.predictions[i].argmax()
-        sentence = dataset['premise'][i]
+        sentence = dataset['hypothesis'][i]
         sentence = ''.join(list(map(str.lower, sentence)))
         sentence = sentence.translate(
             str.maketrans('', '', string.punctuation))
@@ -133,47 +133,47 @@ def compute_graph(eval_preds: EvalPrediction, dataset):
     z = 0.95
     p = ((2/(9*n))**0.5)*z + 1/3
     ############# Local Edits #############
-    print("===============LOCAL EDIT START====================")
-    local_edits_list = []
-    for idx, word in enumerate(list(count.keys())):
-        n_i = x[idx]
-        p_i = ((2/(9*n_i))**0.5)*z + 1/3
-        if sum(list(count[word])) < 3:
-            continue
-        if y0[idx] > p_i:
-            local_edits_list.append((word, y0[idx], 0))
-        if y1[idx] > p_i:
-            local_edits_list.append((word, y1[idx], 1))
-        if y2[idx] > p_i:
-            local_edits_list.append((word, y2[idx], 2))
+    # print("===============LOCAL EDIT START====================")
+    # local_edits_list = []
+    # for idx, word in enumerate(list(count.keys())):
+    #     n_i = x[idx]
+    #     p_i = ((2/(9*n_i))**0.5)*z + 1/3
+    #     if sum(list(count[word])) < 3:
+    #         continue
+    #     if y0[idx] > p_i:
+    #         local_edits_list.append((word, y0[idx], 0))
+    #     if y1[idx] > p_i:
+    #         local_edits_list.append((word, y1[idx], 1))
+    #     if y2[idx] > p_i:
+    #         local_edits_list.append((word, y2[idx], 2))
 
-    # sort by the distance from the hypothesis test
-    local_edits_list.sort(key=lambda x: x[1], reverse=True)
+    # # sort by the distance from the hypothesis test
+    # local_edits_list.sort(key=lambda x: x[1], reverse=True)
 
-    num_to_edit = 20
-    if len(local_edits_list) < 20:
-        num_to_edit = len(local_edits_list)
-    print ("local_edits_list", len(local_edits_list))
+    # num_to_edit = 20
+    # if len(local_edits_list) < 20:
+    #     num_to_edit = len(local_edits_list)
+    # print ("local_edits_list", len(local_edits_list))
 
-    # get id of the sentences that needs to be edited
-    res_dict = defaultdict(lambda : [])
-    res_dict_len = 0
-    with open('local_edit_target.json', encoding='utf-8', mode='w') as f:
-        for idx, sentence in enumerate(sentences):
-            texts, sidx, pred_label = sentence
-            for word, prob, label in local_edits_list[:num_to_edit]:
-                if pred_label == label and word in texts:
-                    # print(dataset.select([sidx]), file = f)
-                    distrib = ','.join([str(x) for x in count[word]])
-                    name = word+"("+ distrib +")"
-                    res_dict[name].append(dataset.select([sidx])[0])
-                    res_dict_len += 1
-                    break
+    # # get id of the sentences that needs to be edited
+    # res_dict = defaultdict(lambda : [])
+    # res_dict_len = 0
+    # with open('local_edit_target.json', encoding='utf-8', mode='w') as f:
+    #     for idx, sentence in enumerate(sentences):
+    #         texts, sidx, pred_label = sentence
+    #         for word, prob, label in local_edits_list[:num_to_edit]:
+    #             if pred_label == label and word in texts:
+    #                 # print(dataset.select([sidx]), file = f)
+    #                 distrib = ','.join([str(x) for x in count[word]])
+    #                 name = word+"("+ distrib +")"
+    #                 res_dict[name].append(dataset.select([sidx])[0])
+    #                 res_dict_len += 1
+    #                 break
 
-        print("res_dict_len", res_dict_len)
-        json.dump(res_dict, f)
+    #     print("res_dict_len", res_dict_len)
+    #     json.dump(res_dict, f)
 
-    print("===============LOCAL EDIT END====================")
+    # print("===============LOCAL EDIT END====================")
     ############# Local Edits End #############
     plt.plot(n, p, label=r'$\alpha = 0.05$')
 
