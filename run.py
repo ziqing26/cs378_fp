@@ -60,7 +60,7 @@ def main():
     # dataset = datasets.load_dataset(
     #     "alisawuffles/WANLI", split=('train', 'test'))
     dataset = datasets.load_dataset(
-        "alisawuffles/WANLI", split=('train', 'test'))
+        "alisawuffles/WANLI", split=('train[:18000]', 'test'))
     dataset = datasets.DatasetDict(
         {'train': dataset[0], 'test': dataset[1]})
     # Rename the split to the original name
@@ -73,20 +73,20 @@ def main():
         lambda example: {'label': label_map[example['label']]})
 
     # balance the dataset for each class
-    count = [0, 0, 0]
-    NUM_OF_SAMPLE_PER_CLASS = TOTAL_SAMPLES/3 #6000
-    index_list = []
-    for sample in dataset['train']:
-        if sum(count) == TOTAL_SAMPLES:
-            break
-        if count[sample['label']] >= NUM_OF_SAMPLE_PER_CLASS:
-            continue
-        count[sample['label']] += 1
-        index_list.append(sample['id'])
+    # count = [0, 0, 0]
+    # NUM_OF_SAMPLE_PER_CLASS = TOTAL_SAMPLES/3  # 6000
+    # index_list = []
+    # for sample in dataset['train']:
+    #     if sum(count) == TOTAL_SAMPLES:
+    #         break
+    #     if count[sample['label']] >= NUM_OF_SAMPLE_PER_CLASS:
+    #         continue
+    #     count[sample['label']] += 1
+    #     index_list.append(sample['id'])
 
-    index_list = set(index_list)
-    
-    dataset['train'] = dataset['train'].filter(lambda x: x['id'] in index_list)
+    # index_list = set(index_list)
+
+    # dataset['train'] = dataset['train'].filter(lambda x: x['id'] in index_list)
     eval_split = 'train'
 
     # ############# LOCAL EDIT ###############
@@ -112,7 +112,6 @@ def main():
 
     # dataset['train'] = dataset['train'].map(add_local_edits)
 
-    
     # ############# LOCAL EDIT ENDS ###############
 
     # if args.dataset.endswith('.json') or args.dataset.endswith('.jsonl'):

@@ -11,16 +11,16 @@
     {
       "id": 176898,
       "premise": "The need for effective, early treatment of disease is a significant reason for the continued growth of the medical profession.",
-      "hypothesis": "The medical profession is growing because of the need for effective treatment of depression.",
-      "label": 1,
+      "hypothesis": "The medical profession is growing because of the need for effective treatment of disease.",
+      "label": 0,
       "genre": "generated",
       "pairID": "101034"
     },
     {
       "id": 348666,
       "premise": "In the early 20th century it was a favorite haunt of Coleridge and other English Romantics.",
-      "hypothesis": "In the 20th century Coleridge hated it.",
-      "label": 2,
+      "hypothesis": "In the 20th century Coleridge enjoyed it.",
+      "label": 0,
       "genre": "generated",
       "pairID": "105585"
     }
@@ -29,8 +29,8 @@
     {
       "id": 201418,
       "premise": "He believes that the health care system will not be able to handle the growth in the number of elderly people.",
-      "hypothesis": "The health care system may not be able to handle the growth in the number of elderly people.",
-      "label": 0,
+      "hypothesis": "The health care system will not be able to handle the growth in the number of elderly people.",
+      "label": 1,
       "genre": "generated",
       "pairID": "42641"
     },
@@ -45,8 +45,8 @@
     {
       "id": 45016,
       "premise": "For the same reason, it is often said that, in the end, the only thing the economy's leading figures really care about is money.",
-      "hypothesis": "The economy's leading figures do not care money.",
-      "label": 2,
+      "hypothesis": "The economy's leading figures are usually people like Boone Pickens who like to stay hidden.",
+      "label": 1,
       "genre": "generated_revised",
       "pairID": "385051"
     }
@@ -63,16 +63,16 @@
     {
       "id": 150063,
       "premise": "the objective of the act is to ensure that all relevant data are collected and analyzed to determine the need for, and the cost of, programs and services, and to make the results of the analysis available to the public.",
-      "hypothesis": "The objective of the act is to make sure that all relevant data are collected and analyzed to determine the need for, and the cost of, flexibilities and plannings.",
-      "label": 1,
+      "hypothesis": "The objective of the act is to make sure that all relevant data are collected and analyzed to determine the need for, and the cost of, programs and services.",
+      "label": 0,
       "genre": "generated",
       "pairID": "269930"
     },
     {
       "id": 81720,
       "premise": "There are two major concerns with regard to this type of practice. First, it is difficult to ensure that all of the necessary training is given to all of the employees. Second, it is difficult to determine whether the quality of the work is satisfactory.",
-      "hypothesis": "The practice is appropriate for all employees.",
-      "label": 2,
+      "hypothesis": "The practice is not appropriate for all employees.",
+      "label": 0,
       "genre": "generated",
       "pairID": "276926"
     }
@@ -81,8 +81,8 @@
     {
       "id": 341367,
       "premise": "In addition, some authors have recommended that more effort be made to identify the actual causes of the high prevalence of false positives in screening studies. For example, some authors have suggested that it is possible that the screening procedure used in the screening studies is biased in favor of detecting false positives. If the screening procedure is biased in favor of detecting false positives, then the results of the screening studies may be misleading.",
-      "hypothesis": "It is helpful to find the causes of false positives.",
-      "label": 0,
+      "hypothesis": "It is not necessary to find the causes of false positives.",
+      "label": 1,
       "genre": "generated",
       "pairID": "78764"
     }
@@ -91,8 +91,8 @@
     {
       "id": 67911,
       "premise": "The demand for many of these materials is highly elastic, which means that the price of these materials changes little in response to changes in the price of the raw materials.",
-      "hypothesis": "The demand of materials is inelastic.",
-      "label": 2,
+      "hypothesis": "The price of raw materials is less elastic than the price of the finished products.",
+      "label": 1,
       "genre": "generated",
       "pairID": "367903"
     }
@@ -109,8 +109,8 @@
     {
       "id": 184454,
       "premise": "The end result of this is that it is possible to find the right balance between the need for more stringent safety and the need for more flexibility in safety.",
-      "hypothesis": "There is no balance between the need for more stringent safety and the need for more flexibility in safety.",
-      "label": 2,
+      "hypothesis": "The balance between the need for more stringent safety and the need for more flexibility in safety can be found.",
+      "label": 0,
       "genre": "generated",
       "pairID": "202268"
     }
@@ -119,8 +119,8 @@
     {
       "id": 216076,
       "premise": "I have always been a Republican, but I have always been a Republican who thought that a good Republican should have a good education.",
-      "hypothesis": "I don't think good education is important.",
-      "label": 2,
+      "hypothesis": "He is a man.",
+      "label": 1,
       "genre": "generated",
       "pairID": "242948"
     }
@@ -137,16 +137,16 @@
     {
       "id": 68603,
       "premise": "The ultimate result of this arrangement is that the government can say anything it wants, and the people will believe it.",
-      "hypothesis": "The children can say anything they wants.",
-      "label": 1,
+      "hypothesis": "The government can say anything it wants.",
+      "label": 0,
       "genre": "generated",
       "pairID": "134800"
     },
     {
       "id": 203421,
       "premise": "They say that the king is like a child, he doesn't know what he wants.",
-      "hypothesis": "The king is very mature.",
-      "label": 2,
+      "hypothesis": "The king is very immature.",
+      "label": 0,
       "genre": "generated",
       "pairID": "202795"
     }
@@ -171,8 +171,8 @@
     {
       "id": 89947,
       "premise": "He was at the head of the police, but he did not have the authority to arrest anyone.",
-      "hypothesis": "He did not have the authority to arrest anyone, becuase he was at the head of the police.",
-      "label": 0,
+      "hypothesis": "He was at the head of the army, but he did not have the authority to arrest anyone.",
+      "label": 2,
       "genre": "generated",
       "pairID": "203766"
     },
@@ -197,16 +197,16 @@
     {
       "id": 140227,
       "premise": "The failure of the current tax system to raise enough revenue to meet the needs of the government is not due to the tax rate, but to the size of the tax base.",
-      "hypothesis": "The failure of the current tax system to raise enough revenue to meet the needs of the government is due to the size of the tax base.",
-      "label": 0,
+      "hypothesis": "The failure of the current tax system to raise enough revenue to meet the needs of the government is due to the tax rate.",
+      "label": 2,
       "genre": "generated",
       "pairID": "127517"
     },
     {
       "id": 331187,
       "premise": "It is not enough to identify the strengths of the organization, however, because it is the weaknesses that must be overcome.",
-      "hypothesis": "The strengths of the organization is hard to identify.",
-      "label": 1,
+      "hypothesis": "The strengths of the organization must be overcome.",
+      "label": 2,
       "genre": "generated",
       "pairID": "103468"
     }
@@ -223,8 +223,8 @@
     {
       "id": 141726,
       "premise": "It is difficult to make a good case for such a claim.",
-      "hypothesis": "It is easy to make a good case against such a claim.",
-      "label": 2,
+      "hypothesis": "It is difficult to make a good case against such a claim.",
+      "label": 1,
       "genre": "generated",
       "pairID": "364024"
     }
@@ -241,16 +241,16 @@
     {
       "id": 288932,
       "premise": "The authors have shown that, in the case of college students, the degree of cognitive effort invested in the learning process is related to the level of self-efficacy.",
-      "hypothesis": "The authors have shown that the degree of cognitive effort invested in the learning process is related to self-regulation.",
-      "label": 1,
+      "hypothesis": "The authors have shown that the degree of cognitive effort invested in the learning process is related to the level of self-efficacy.",
+      "label": 0,
       "genre": "generated",
       "pairID": "371209"
     },
     {
       "id": 45445,
       "premise": "A number of recent studies have shown that many of the nation's leading corporations are far more interested in the bottom line than in meeting the needs of their employees.",
-      "hypothesis": "Corporations are interested in meeting the needs of their employees.",
-      "label": 2,
+      "hypothesis": "Corporations are interested in the bottom line.",
+      "label": 0,
       "genre": "generated",
       "pairID": "188770"
     }
@@ -259,16 +259,16 @@
     {
       "id": 169778,
       "premise": "That's what they said.",
-      "hypothesis": "They said it yesterday.",
-      "label": 1,
+      "hypothesis": "They said it.",
+      "label": 0,
       "genre": "generated",
       "pairID": "110173"
     },
     {
       "id": 75517,
       "premise": "And that's why we're here today, and that's why we're here tomorrow, and that's why we're here every day.",
-      "hypothesis": "We will not be here tomorrow.",
-      "label": 2,
+      "hypothesis": "We are here every day.",
+      "label": 0,
       "genre": "generated",
       "pairID": "387142"
     }
@@ -295,8 +295,8 @@
     {
       "id": 38621,
       "premise": "They do not consider the defendant to be an adult, and they do not consider him to be a child.",
-      "hypothesis": "They do not consider his feelings.",
-      "label": 1,
+      "hypothesis": "They consider him to be an adult.",
+      "label": 2,
       "genre": "generated",
       "pairID": "389686"
     }

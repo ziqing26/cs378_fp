@@ -12,9 +12,11 @@ import matplotlib.pyplot as plt
 import json
 
 QA_MAX_ANSWER_LENGTH = 30
-TOTAL_SAMPLES = 360
+TOTAL_SAMPLES = 18000
 
 # This function preprocesses an NLI dataset, tokenizing premises and hypotheses.
+
+
 def prepare_dataset_nli(examples, tokenizer, max_seq_length=None):
     max_seq_length = tokenizer.model_max_length if max_seq_length is None else max_seq_length
 
@@ -40,6 +42,7 @@ def compute_accuracy(eval_preds: EvalPrediction):
             np.float32).mean().item()
     }
 
+
 def compute_graph(eval_preds: EvalPrediction, dataset):
     # print("train_dataset length", len(dataset))
     # print("predict length", len(eval_preds.label_ids))
@@ -48,7 +51,7 @@ def compute_graph(eval_preds: EvalPrediction, dataset):
     # }
     count = defaultdict(lambda: [0, 0, 0])
 
-    sentences = [] #(sentence, id, pred_label_id)
+    sentences = []  # (sentence, id, pred_label_id)
     for i in range(len(eval_preds.label_ids)):
         if i % 500 == 0:
             print("number of sentence:", i)
@@ -58,7 +61,7 @@ def compute_graph(eval_preds: EvalPrediction, dataset):
         sentence = sentence.translate(
             str.maketrans('', '', string.punctuation))
         sentence = sentence.split(' ')
-        
+
         sentences.append((sentence, i, pred))
 
         for word in sentence:
@@ -131,7 +134,8 @@ def compute_graph(eval_preds: EvalPrediction, dataset):
 
     # print("===============LOCAL EDIT END====================")
     ############# Local Edits End #############
-    plt.plot(n, p, label=r'$\alpha = 0.05 / {c}$'.replace('c', str(TOTAL_SAMPLES)))
+    plt.plot(
+        n, p, label=r'$\alpha = 0.05 / {c}$'.replace('c', str(TOTAL_SAMPLES)))
 
     plot_graph(x, y0, "blue", "entailment")
     plot_graph(x, y1, "red", "neutral")
@@ -142,6 +146,7 @@ def compute_graph(eval_preds: EvalPrediction, dataset):
     plt.legend(loc="upper right")
     plt.savefig("{c}_graph.png".format(c=TOTAL_SAMPLES))
     return
+
 
 def plot_graph(x, y, color, name):
     plt.scatter(x, y, c=color, s=1, label=name)
