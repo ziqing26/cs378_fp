@@ -73,17 +73,19 @@ def main():
 
     # balance the dataset for each class
     count = [0, 0, 0]
-    NUM_OF_SAMPLE_PER_CLASS = 10000
+    NUM_OF_SAMPLE_PER_CLASS = 6000
     index_list = []
     for sample in dataset['train']:
         if sum(count) == 3*NUM_OF_SAMPLE_PER_CLASS:
             break
         if count[sample['label']] >= NUM_OF_SAMPLE_PER_CLASS:
             continue
+        count[sample['label']] += 1
         index_list.append(sample['id'])
 
-    dataset['train'] = dataset['train'].select(index_list)
-
+    index_list = set(index_list)
+    
+    dataset['train'] = dataset['train'].filter(lambda x: x['id'] in index_list)
     eval_split = 'train'
 
     # if args.dataset.endswith('.json') or args.dataset.endswith('.jsonl'):

@@ -40,7 +40,6 @@ def compute_accuracy(eval_preds: EvalPrediction):
     }
 
 
-def compute_graph(eval_preds: EvalPrediction, dataset):
     # print("train_dataset length", len(dataset))
     # print("predict length", len(eval_preds.label_ids))
     # {
@@ -86,7 +85,94 @@ def compute_graph(eval_preds: EvalPrediction, dataset):
     plt.legend(loc="upper right")
     plt.savefig("aggregate"+".png")
     return
+def compute_graph(eval_preds: EvalPrediction, dataset):
+    # print("train_dataset length", len(dataset))
+    # print("predict length", len(eval_preds.label_ids))
+    # {
+    #     index of word: (num of class 0 prediction, num of class 1 pred, num of class 2 pred)
+    # }
+    count = defaultdict(lambda: [0, 0, 0])
 
+    sentences = [] #(sentence, id, pred_label_id)
+    for i in range(len(eval_preds.label_ids)):
+        if i % 500 == 0:
+            print("number of sentence:", i)
+        pred = eval_preds.predictions[i].argmax()
+        sentence = dataset['premise'][i]
+        sentence = ''.join(list(map(str.lower, sentence)))
+        sentence = sentence.translate(
+            str.maketrans('', '', string.punctuation))
+        sentence = sentence.split(' ')
+        
+        sentences.append((sentence, dataset['id'][i], pred))
+
+        for word in sentence:
+            # index = indexer.add_and_get_index(word)
+            count[word][pred] += 1
+
+    y0, y1, y2, x = [], [], [], []
+
+    index = 0
+    for word, counts in list(count.items()):
+        if index % 1000 == 0:
+            print("number of word:", index)
+        index += 1
+        counts = np.array(counts)
+        total = np.sum(counts)
+        probs = counts / total
+        # compare probs with p
+        #   (word1, probs, label), word2, ...]
+        # find the sentence
+        local_edits_list
+        x.append(total)
+        y0.append(probs[0])
+        y1.append(probs[1])
+        y2.append(probs[2])
+
+    n = np.arange(1, max(x))
+    z = 0.95
+    p = ((2/(9*n))**0.5)*z + 1/3
+    ############# Local Edits #############
+    print("===============LOCAL EDIT START====================")
+    local_edits_list = []
+    for idx, word in enumerate(list(count.keys())):
+        if y0[idx] > p:
+            local_edits_list.append((word, y0[idx], 0))
+        if y1[idx] > p:
+            local_edits_list.append((word, y1[idx], 1))
+        if y2[idx] > p:
+            local_edits_list.append((word, y2[idx], 2))
+
+    # sort by the distance from the hypothesis test
+    local_edits_list.sort(key=lambda x: x[1])
+    print ("local_edits_list", len(local_edits_list), local_edits_list)
+
+    num_to_edit = 60
+    if len(local_edits_list) < 60:
+        num_to_edit = len(local_edits_list)
+
+    # get id of the sentences that needs to be edited
+    count = 0
+    for idx, sentence in enumerate(sentences):
+        texts, sid, pred_label = sentence
+        for word, prob, label in local_edits_list[:num_to_edit]:
+            if pred_label == label and word in texts:
+                print(count, ":id", sid, "label", label, "prob", prob, "premise", ' '.join(sentence))
+                count += 1
+    
+    print("===============LOCAL EDIT END====================")
+    ############# Local Edits End #############
+    plt.plot(n, p, label=r'$\alpha = 0.05$')
+
+    plot_graph(x, y0, "blue", "entailment")
+    plot_graph(x, y1, "red", "neutral")
+    plot_graph(x, y2, "green", "contradiction")
+
+    plt.xscale('log', base=10)
+    plt.xlim(min(x), max(x))
+    plt.legend(loc="upper right")
+    plt.savefig("aggregate"+".png")
+    return
 
 def plot_graph(x, y, color, name):
     plt.scatter(x, y, c=color, s=0.1, label=name)
